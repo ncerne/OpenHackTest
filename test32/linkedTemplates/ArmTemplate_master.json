@@ -102,18 +102,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"FourthCoffeService_password": {
-						"value": "[parameters('FourthCoffeService_password')]"
-					},
-					"SqlServerLinkedService_connectionString": {
-						"value": "[parameters('SqlServerLinkedService_connectionString')]"
-					},
-					"FourthCoffeService_properties_typeProperties_host": {
-						"value": "[parameters('FourthCoffeService_properties_typeProperties_host')]"
-					},
-					"FourthCoffeService_properties_typeProperties_userId": {
-						"value": "[parameters('FourthCoffeService_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -134,6 +122,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"FourthCoffeService_password": {
+						"value": "[parameters('FourthCoffeService_password')]"
+					},
+					"SqlServerLinkedService_connectionString": {
+						"value": "[parameters('SqlServerLinkedService_connectionString')]"
+					},
+					"FourthCoffeService_properties_typeProperties_host": {
+						"value": "[parameters('FourthCoffeService_properties_typeProperties_host')]"
+					},
+					"FourthCoffeService_properties_typeProperties_userId": {
+						"value": "[parameters('FourthCoffeService_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -159,6 +159,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'test32_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "test32_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'test32_ArmTemplate_3')]"
 			]
 		}
 	]

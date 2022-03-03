@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText14",
+	"name": "DelimitedText16",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -10,30 +10,15 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "CombinedData",
+				"fileName": "dboTransactions.txt",
+				"folderPath": "CloudStreaming",
 				"fileSystem": "testfile"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
 			{
 				"type": "String"
 			},

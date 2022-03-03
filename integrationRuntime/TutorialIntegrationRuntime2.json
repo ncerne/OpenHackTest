@@ -1,0 +1,6 @@
+{
+	"name": "TutorialIntegrationRuntime2",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

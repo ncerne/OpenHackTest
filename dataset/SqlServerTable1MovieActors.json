@@ -1,0 +1,30 @@
+{
+	"name": "SqlServerTable1MovieActors",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "ActorID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ActorName",
+				"type": "varchar"
+			},
+			{
+				"name": "Gender",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MovieActors"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

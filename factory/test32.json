@@ -1,0 +1,9 @@
+{
+	"name": "test32",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a533bb5c-c4ad-41b5-b432-f9536aee5580",
+		"tenantId": "72f1a12a-219d-4ba3-9c9b-7c0e1e34114f"
+	}
+}

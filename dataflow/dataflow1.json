@@ -9,25 +9,45 @@
 						"referenceName": "DelimitedText4",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "CloudSalesCustomers"
 				},
 				{
 					"dataset": {
 						"referenceName": "DelimitedText6",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
-				}
-			],
-			"sinks": [
+					"name": "CloudSalesAddresses"
+				},
 				{
 					"dataset": {
-						"referenceName": "DelimitedText7",
+						"referenceName": "DelimitedText8",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "CloudStreamingCustomers"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText9",
+						"type": "DatasetReference"
+					},
+					"name": "CloudStreamingAddresses"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText12",
+						"type": "DatasetReference"
+					},
+					"name": "FourthCoffeeCustomersAndAddresses"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText11",
+						"type": "DatasetReference"
+					},
+					"name": "VanArsdelLtdCustomersAndAddresses"
 				}
 			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "join1"
@@ -43,9 +63,39 @@
 				},
 				{
 					"name": "derivedColumn4"
+				},
+				{
+					"name": "derivedColumn5"
+				},
+				{
+					"name": "derivedColumn6"
+				},
+				{
+					"name": "derivedColumn7"
+				},
+				{
+					"name": "derivedColumn8"
+				},
+				{
+					"name": "derivedColumn9"
+				},
+				{
+					"name": "derivedColumn10"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "derivedColumn11"
+				},
+				{
+					"name": "derivedColumn12"
 				}
 			],
-			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nderivedColumn2, derivedColumn4 join(source1@CustomerID == source2@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join1\nsource1 derive(SourceID = 1) ~> derivedColumn1\nderivedColumn1 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn2\nsource2 derive(SourceID = 1) ~> derivedColumn3\nderivedColumn3 derive(UniqueID = concat(toString(SourceID), CustomerID, AddressID)) ~> derivedColumn4\njoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> FourthCoffeeCustomersAndAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tFirstName as string,\n\t\tLastName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> VanArsdelLtdCustomersAndAddresses\nderivedColumn2, derivedColumn4 join(CloudSalesCustomers@CustomerID == CloudSalesAddresses@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join1\nCloudSalesCustomers derive(SourceID = 1) ~> derivedColumn1\nderivedColumn1 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn2\nCloudSalesAddresses derive(SourceID = 1) ~> derivedColumn3\nderivedColumn3 derive(UniqueID = concat(toString(SourceID), CustomerID, AddressID)) ~> derivedColumn4\nCloudStreamingCustomers derive(SourceID = 1) ~> derivedColumn5\nCloudStreamingAddresses derive(SourceID = 1) ~> derivedColumn6\nVanArsdelLtdCustomersAndAddresses derive(SourceID = 2) ~> derivedColumn7\nFourthCoffeeCustomersAndAddresses derive(SourceID = 3) ~> derivedColumn8\nderivedColumn5 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn9\nderivedColumn6 derive(UniqueID = concat(toString(SourceID),CustomerID,AddressID)) ~> derivedColumn10\nderivedColumn9, derivedColumn10 join(CloudStreamingCustomers@CustomerID == CloudStreamingAddresses@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join2\njoin1, join2, derivedColumn11, derivedColumn12 union(byName: true)~> union1\nderivedColumn8 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn11\nderivedColumn7 derive(UniqueID = concat(toString(SourceID),CustomerID)) ~> derivedColumn12"
 		}
 	}
 }

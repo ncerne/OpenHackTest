@@ -1,0 +1,43 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText6",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "derivedColumn4"
+				}
+			],
+			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nderivedColumn2, derivedColumn4 join(source1@CustomerID == source2@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join1\nsource1 derive(SourceID = 1) ~> derivedColumn1\nderivedColumn1 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn2\nsource2 derive(SourceID = 1) ~> derivedColumn3\nderivedColumn3 derive(UniqueID = concat(toString(SourceID), CustomerID, AddressID)) ~> derivedColumn4"
+		}
+	}
+}

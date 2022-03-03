@@ -101,6 +101,54 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/CombiningStreaming')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CopyPipeline_0ciStreamingParquet')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -3005,6 +3053,187 @@
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText15')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "CustomersWithAddresses.csv",
+						"folderPath": "CombinedData",
+						"fileSystem": "testfile"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText16')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dboTransactions.txt",
+						"folderPath": "CloudStreaming",
+						"fileSystem": "testfile"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText17')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "CombinedData",
+						"fileSystem": "testfile"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": [
@@ -4705,7 +4934,7 @@
 							"name": "union2"
 						}
 					],
-					"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID2 as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as date,\n\t\tUpdatedDate as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> FourthCoffeeCustomersAndAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tFirstName as string,\n\t\tLastName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> VanArsdelLtdCustomersAndAddresses\nderivedColumn2, derivedColumn4 join(CustomerID == CustomerID2,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join1\nCloudSalesCustomers derive(SourceID = 1) ~> derivedColumn1\nderivedColumn1 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn2\nCloudSalesAddresses derive(SourceID = 1) ~> derivedColumn3\nderivedColumn3 derive(UniqueID = concat(toString(SourceID), CustomerID2, AddressID)) ~> derivedColumn4\nCloudStreamingCustomers derive(SourceID = 1) ~> derivedColumn5\nCloudStreamingAddresses derive(SourceID = 1) ~> derivedColumn6\nVanArsdelLtdCustomersAndAddresses derive(SourceID = 2) ~> derivedColumn7\nFourthCoffeeCustomersAndAddresses derive(SourceID = 3,\n\t\tCreatedDate = toTimestamp(CreatedDate),\n\t\tUpdatedDate = toTimestamp(UpdatedDate)) ~> derivedColumn8\nderivedColumn5 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn9\nderivedColumn6 derive(UniqueID = concat(toString(SourceID),CustomerID,AddressID)) ~> derivedColumn10\nderivedColumn9, derivedColumn10 join(CloudStreamingCustomers@CustomerID == CloudStreamingAddresses@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join2\nderivedColumn8 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn11\nderivedColumn7 derive(UniqueID = concat(toString(SourceID),CustomerID)) ~> derivedColumn12\njoin1 select(mapColumn(\n\t\tSourceID = derivedColumn1@SourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate = CloudSalesCustomers@CreatedDate,\n\t\tUpdatedDate = CloudSalesCustomers@UpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select1\njoin2 select(mapColumn(\n\t\tSourceID = derivedColumn5@SourceID,\n\t\tCustomerID = CloudStreamingCustomers@CustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate = CloudStreamingCustomers@CreatedDate,\n\t\tUpdatedDate = CloudStreamingCustomers@UpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select2\nderivedColumn11 select(mapColumn(\n\t\tSourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate,\n\t\tUpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select3\nderivedColumn12 select(mapColumn(\n\t\tSourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate,\n\t\tUpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select4\nselect4, select1, select2, select3 union(byName: true,\n\tpartitionBy('hash', 1))~> union2\nunion2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
+					"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID2 as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudSalesAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingCustomers\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CloudStreamingAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as date,\n\t\tUpdatedDate as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> FourthCoffeeCustomersAndAddresses\nsource(output(\n\t\tCustomerID as string,\n\t\tFirstName as string,\n\t\tLastName as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> VanArsdelLtdCustomersAndAddresses\nderivedColumn2, derivedColumn4 join(CustomerID == CustomerID2,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join1\nCloudSalesCustomers derive(SourceID = 1) ~> derivedColumn1\nderivedColumn1 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn2\nCloudSalesAddresses derive(SourceID = 1) ~> derivedColumn3\nderivedColumn3 derive(UniqueID = concat(toString(SourceID), CustomerID2, AddressID)) ~> derivedColumn4\nCloudStreamingCustomers derive(SourceID = 1) ~> derivedColumn5\nCloudStreamingAddresses derive(SourceID = 1) ~> derivedColumn6\nVanArsdelLtdCustomersAndAddresses derive(SourceID = 2) ~> derivedColumn7\nFourthCoffeeCustomersAndAddresses derive(SourceID = 3,\n\t\tCreatedDate = toTimestamp(CreatedDate),\n\t\tUpdatedDate = toTimestamp(UpdatedDate)) ~> derivedColumn8\nderivedColumn5 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn9\nderivedColumn6 derive(UniqueID = concat(toString(SourceID),CustomerID,AddressID)) ~> derivedColumn10\nderivedColumn9, derivedColumn10 join(CloudStreamingCustomers@CustomerID == CloudStreamingAddresses@CustomerID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> join2\nderivedColumn8 derive(UniqueID = concat(toString(SourceID), CustomerID)) ~> derivedColumn11\nderivedColumn7 derive(UniqueID = concat(toString(SourceID),CustomerID)) ~> derivedColumn12\njoin1 select(mapColumn(\n\t\tSourceID = derivedColumn1@SourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate = CloudSalesCustomers@CreatedDate,\n\t\tUpdatedDate = CloudSalesCustomers@UpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select1\njoin2 select(mapColumn(\n\t\tSourceID = derivedColumn5@SourceID,\n\t\tCustomerID = CloudStreamingCustomers@CustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate = CloudStreamingCustomers@CreatedDate,\n\t\tUpdatedDate = CloudStreamingCustomers@UpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select2\nderivedColumn11 select(mapColumn(\n\t\tSourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate,\n\t\tUpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select3\nderivedColumn12 select(mapColumn(\n\t\tSourceID,\n\t\tCustomerID,\n\t\tLastName,\n\t\tFirstName,\n\t\tPhoneNumber,\n\t\tAddressLine1,\n\t\tAddressLine2,\n\t\tCity,\n\t\tState,\n\t\tZipCode,\n\t\tCreatedDate,\n\t\tUpdatedDate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> select4\nselect4, select1, select2, select3 union(byName: true,\n\tpartitionBy('hash', 1))~> union2\nunion2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string\n\t),\n\tpartitionFileNames:['CustomersWithAddresses.csv'],\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink2"
 				}
 			},
 			"dependsOn": [
@@ -4716,6 +4945,52 @@
 				"[concat(variables('factoryId'), '/datasets/DelimitedText12')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText11')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText14')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText15",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText16",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText17",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						}
+					],
+					"script": "source(output(\n\t\tSourceID as string,\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as timestamp,\n\t\tUpdatedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource(output(\n\t\tTransactionID as string,\n\t\tMovieID as string,\n\t\tCustomerID as string,\n\t\tStreamStart as timestamp,\n\t\tStreamEnd as timestamp,\n\t\tStreamStartDate as date,\n\t\tSteamEndDate as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource1, source2 join(source1@CustomerID == source2@CustomerID,\n\tjoinType:'right',\n\tpartitionBy('hash', 1),\n\tbroadcast: 'auto')~> join1\njoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string\n\t),\n\tpartitionFileNames:['CustomersWithTransactions.csv'],\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText15')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText16')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText17')]"
 			]
 		}
 	]
